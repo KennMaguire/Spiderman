@@ -72,7 +72,7 @@ totTime = t1 - t0
 print("Total time to build collab matrix: " + str(totTime))
 savClbMat = np.matrix(clbMat)
 with open('matfile.txt', 'w') as f:
-    for line in saveClbMat:
+    for line in savClbMat:
         np.savetxt(f, line, fmt='i')
 
 t0 = ti.time()
