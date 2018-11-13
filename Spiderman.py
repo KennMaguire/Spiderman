@@ -70,3 +70,14 @@ t1 = ti.time()
 print(clbMat)
 totTime = t1 - t0
 print("Total time to build collab matrix: " + str(totTime))
+savClbMat = np.matrix(clbMat)
+with open('matfile.txt', 'w') as f:
+    for line in saveClbMat:
+        np.savetxt(f, line, fmt='i')
+
+t0 = ti.time()
+spidey2 = np.matmul(clbMat, clbMat)
+t1 = ti.time()
+print(spidey2)
+totTime = t1-t0
+print("Total time for matmul: " + str(totTime))
