@@ -1,6 +1,6 @@
 
 import numpy as np
-import timeit as ti
+import time as ti
 """
 a = [[0,5], [10, 15], [11,100]]
 b = [[2,3], [5,4]]
@@ -43,15 +43,30 @@ print("The length of the comics list is: " + str(len(comics)))
 
 for i in edges:
     asso = 1
-    comics = i[1].split()
-    for j in comics:
+    com = i[1].split()
+    for j in com:
         row = int(i[0]) - 1            #minus 1 since 0 to n-1 indexing
         col = int(j) - 6487         #minus 6487 since 0 to n-1 indexing
         hcMatrix[row][col] = asso
-
-
-for j in range(0,12941):
+for j in range(0,len(comics)):
     i = 5305
     if(hcMatrix[i][j] == 1):
         print(1, end = "")
 print("\n")
+ #end of association matrix
+
+ #start collab matrix
+clbMat = np.zeros([len(heroes),len(heroes)], dtype=np.int8)
+t0 = ti.time()
+for col in range(0,len(comics)):
+    clbHero = []
+    for row in range(0,len(heroes)):
+        if hcMatrix[row][col] == 1:
+            clbHero.append(row)
+    for i in clbHero:
+        for j in clbHero:
+            clbMat[i][j] = 1
+t1 = ti.time()
+print(clbMat)
+totTime = t1 - t0
+print("Total time to build collab matrix: " + str(totTime))
