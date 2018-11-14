@@ -7,7 +7,7 @@ b = [[2,3], [5,4]]
 a = np.matrix(a)
 b = np.matrix(b)
 
-
+spideyVal = 5305
 matmu1 = np.matmul(a,a)
 print(matmu1)
 
@@ -53,9 +53,9 @@ for i in edges:
         col = int(j) - 6487         #minus 6487 since 0 to n-1 indexing
         hcMatrix[row][col] = asso
 for j in range(0,len(comics)):
-    i = 5305
-    if(hcMatrix[i][j] == 1):
-        print(1, end = "")
+    i = spideyVal
+    #if(hcMatrix[i][j] == 1):
+    #    print(1, end = "")
 print("\n")
  #end of association matrix
 
@@ -63,12 +63,12 @@ print("\n")
 #clbMat = np.zeros([len(heroes),len(heroes)], dtype=np.int8)
 """ Collab matrix built, stored in matfile.txt. Building takes ~150s, loading from file takes 20s
 t0 = ti.time()
-for col in range(0,len(comics)):
-    clbHero = []
+for col in range(0,len(comics)):                    #outer loop goes through all comics, inner loop searchs for associations, if found add to array
+    clbHero = []                                    #array for holding values where collab is found
     for row in range(0,len(heroes)):
-        if hcMatrix[row][col] == 1:
+        if hcMatrix[row][col] == 1:                 #if 1 is found add to list of heroes who were in that comic
             clbHero.append(row)
-    for i in clbHero:
+    for i in clbHero:                               #add 1 for all heroes who appeared in the same comic in the collab matrix using list of heroes who appeared in that comic
         for j in clbHero:
             clbMat[i][j] = 1
 t1 = ti.time()
@@ -83,15 +83,19 @@ with open('matfile.txt', 'w') as f:
 t0 = ti.time()
 with open('matfile.txt', 'r') as f:
     clbMat = np.loadtxt(f, dtype=np.int32)
+
+
+
 t1 = ti.time()
 print(clbMat)
+
 totTime = t1 - t0
 print("Total time to build collab matrix: " + str(totTime))
-print(clbMat[5305])
-spidey2 = np.zeros([len(heroes), len(heroes)], dtype=np.int32)
+print(clbMat[spideyVal])
+#spidey2 = np.zeros([len(heroes), len(heroes)], dtype=np.int32)
 t0 = ti.time()
 print("getting spiderman of 2")
-spidey1 = clbMat[5305]
+spidey1 = clbMat[spideyVal]
 spidey2 = np.matmul(clbMat,spidey1)
 print("getting spiderman of 3")
 spidey3 = np.matmul(clbMat,spidey2)
@@ -101,11 +105,11 @@ spidey4 = np.matmul(clbMat,spidey3)
 t1 = ti.time()
 """
 print("spidey 2")
-print(spidey2[5305])
+print(spidey2[spideyVal])
 print("spidey 3")
-print(spidey3[5305])
+print(spidey3[spideyVal])
 print("spidey 4")
-print(spidey4[5305])
+print(spidey4[spideyVal])
 """
 print(spidey1)
 print(spidey2)
@@ -140,6 +144,86 @@ for i in range(0, len(heroes)):
     if spidey4[i] == 0:
         zeroTot += 1
 
+print(zeroTot)
+
+
+for i in range(0, len(heroes)):
+    if (spidey1[i] > 0 and spidey2[i] > 0) or spidey2[i] == 0:
+        spidey2[i] = -1
+for i in range(0, len(heroes)):
+    if (spidey1[i] > 0 or spidey2[i] > 0) and spidey3[i] > 0:
+        spidey3[i] = -1
+for i in range(0, len(heroes)):
+    if (spidey1[i] > 0 or spidey2[i] > 0 or spidey3[i] > 0) > 0 and spidey4[i] > 0:
+        spidey4[i] = -1
+
+spidey1[5305] = 0
+spidey2[5305] = 0
+spidey3[5305] = 0
+spidey4[5305] = 0
+"""
+print("spidey1")
+for i in range(0, len(heroes)):
+    if spidey1[i] > 0:
+        print(spidey1[i])
+print("spidey2")
+for i in range(0, len(heroes)):
+    if spidey2[i] > 0:
+        print(spidey2[i])
+print("spidey3")
+for i in range(0, len(heroes)):
+    if spidey3[i] > 0:
+        print(spidey3[i])
+print("spidey4")
+for i in range(0, len(heroes)):
+    if spidey4[i] > 0:
+        print(spidey4[i])
+
+"""
+
+#get all heroes with spiderman number of 1
+for i in range(0, len(heroes)):
+    heroInd = i
+    if spidey1[i] > 0:
+        print(heroes[heroInd][1] + " 1")
+    elif spidey2[i] > 0:
+        print(heroes[heroInd][1] + " 2")
+    elif spidey3[i] > 0:
+        print(heroes[heroInd][1] + " 3")
+    elif spidey2[i] == 0:
+        print(heroes[heroInd][1] + " 0")
+    else:
+        print(heroes[heroInd][1] + " none")
+
+
+
+
+
+
+print("spidey1")
+zeroTot = 0
+for i in range(0, len(heroes)):
+    if spidey1[i] != 0:     #0 since spidey1 is 0 or 1
+        zeroTot += 1
+print(zeroTot)
+zeroTot = 0
+print("spidey2")
+for i in range(0, len(heroes)):
+    if spidey2[i] != -1:
+        zeroTot += 1
+print(zeroTot)
+zeroTot = 0
+print("spidey3")
+for i in range(0, len(heroes)):
+    if spidey3[i] != -1:
+        zeroTot += 1
+
+print(zeroTot)
+zeroTot = 0
+print("spidey4")
+for i in range(0, len(heroes)):
+    if spidey4[i] != -1:
+        zeroTot += 1
 print(zeroTot)
 
 
