@@ -1,18 +1,8 @@
 
 import numpy as np
 import time as ti
-np.set_printoptions(threshold=8000)
-a = [[0,5,3], [10, 15,1], [11,100,7]]
-b = [[2,3], [5,4]]
-a = np.matrix(a)
-b = np.matrix(b)
 
 spideyVal = 5305
-matmu1 = np.matmul(a,a)
-print(matmu1)
-
-matmu2 = a * a
-print(matmu2)
 #6486 charaters
 #spiderman 5306
 
@@ -180,9 +170,25 @@ for i in range(0, len(heroes)):
         print(spidey4[i])
 
 """
+inInd1 = 0
+inInd2 = 0
+properRange = False
+
+while properRange == False:
+    print("Please enter the index you would like to start printing heroes (From 1-6486)")
+    inInd1 = int(input())
+    print("Please enter the index you would like to finish printing heroes (From 1-6486)")
+    inInd2 = int(input())
+
+    inInd1 = inInd1 - 1
+    if (inInd1 > -1 and inInd1 < 6486) and (inInd2 > 1 and inInd2 < 6487):
+        properRange = True
+    else:
+        print("outside the range of indexes")
+        properRange = False
 
 #get all heroes with spiderman number of 1
-for i in range(0, len(heroes)):
+for i in range(inInd1, inInd2):           #print in range specified
     heroInd = i
     if spidey1[i] > 0:
         print(heroes[heroInd][1] + " 1")
