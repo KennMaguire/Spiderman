@@ -226,21 +226,3 @@ for i in range(0, len(heroes)):
     if spidey4[i] != -1:
         zeroTot += 1
 print(zeroTot)
-
-
-"""
-spidey2Mat = np.matrix(spidey2)
-with open('matfile1.txt', 'w') as f:
-    for line in spidey2Mat:
-        np.savetxt(f, line, fmt='%i')
-
-spidey3Mat = np.matrix(spidey3)
-with open('matfile1.txt', 'w') as f:
-    for line in spidey3Mat:
-        np.savetxt(f, line, fmt='%i')
-
-spidey4Mat = np.matrix(spidey4)
-with open('matfile1.txt', 'w') as f:
-    for line in spidey4Mat:
-        np.savetxt(f, line, fmt='%i')
-"""
