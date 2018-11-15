@@ -36,17 +36,19 @@ print("The length of the comics list is: " + str(len(comics)))
 #building association matrix
 for i in edges:
     asso = 1
-    com = i[1].split()              #
+    com = i[1].split()              #i[0] is hero i[1] is list of comics hero appeared in. Split the value at each index in edge into an array of comic # values
     for j in com:
-        row = int(i[0]) - 1            #minus 1 since 0 to n-1 indexing
-        col = int(j) - 6487         #minus 6487 since 0 to n-1 indexing
+        row = int(i[0]) - 1            #minus 1 since 0 to n-1 indexing. Row is hero index
+        col = int(j) - 6487         #minus 6487 since 0 to n-1 indexing. Col is comic index
         hcMatrix[row][col] = asso   #if hero is in comic, add 1 to hc matrix
 print("\n")
  #end of association matrix
 
  #start collab matrix
 #clbMat = np.zeros([len(heroes),len(heroes)], dtype=np.int8)
-""" Collab matrix built, stored in matfile.txt. Building takes ~150s, loading from file takes 20s
+"""
+
+Collab matrix built, stored in matfile.txt. Building takes ~150s, loading from file takes 20s
 t0 = ti.time()
 for col in range(0,len(comics)):                    #outer loop goes through all comics, inner loop searchs for associations, if found add to array
     clbHero = []                                    #array for holding values where collab is found
@@ -65,6 +67,7 @@ with open('matfile.txt', 'w') as f:
     for line in savClbMat:
         np.savetxt(f, line, fmt='%i')
 """
+print("Retrieving collaboration matrix....")
 t0 = ti.time()
 with open('matfile.txt', 'r') as f:                 #get collab matrix from file
     clbMat = np.loadtxt(f, dtype=np.int32)
@@ -72,11 +75,11 @@ with open('matfile.txt', 'r') as f:                 #get collab matrix from file
 
 
 t1 = ti.time()
-print(clbMat)
+#print(clbMat)
 
 totTime = t1 - t0
 print("Total time to build collab matrix: " + str(totTime))
-print(clbMat[spideyVal])
+#print(clbMat[spideyVal])
 #spidey2 = np.zeros([len(heroes), len(heroes)], dtype=np.int32)
 t0 = ti.time()
 print("getting spiderman of 2")
@@ -88,49 +91,14 @@ print("getting spiderman of 4")
 spidey4 = np.matmul(clbMat,spidey3)                 #get array with spidey number of 4 (also has 1,2,3 for now)
 
 t1 = ti.time()
-"""
-print("spidey 2")
-print(spidey2[spideyVal])
-print("spidey 3")
-print(spidey3[spideyVal])
-print("spidey 4")
-print(spidey4[spideyVal])
-"""
-print(spidey1)
-print(spidey2)
-print(spidey3)
-print(spidey4)
+
+#print(spidey1)
+#print(spidey2)
+#print(spidey3)
+#print(spidey4)
 
 totTime = t1-t0
 print("Total time for matmul: " + str(totTime))
-
-print("spidey1")
-zeroTot = 0
-for i in range(0, len(heroes)):
-    if spidey1[i] == 0:
-        zeroTot += 1
-print(zeroTot)
-zeroTot = 0
-print("spidey2")
-for i in range(0, len(heroes)):
-    if spidey2[i] == 0:
-        zeroTot += 1
-print(zeroTot)
-zeroTot = 0
-print("spidey3")
-for i in range(0, len(heroes)):
-    if spidey3[i] == 0:
-        zeroTot += 1
-
-print(zeroTot)
-zeroTot = 0
-print("spidey4")
-for i in range(0, len(heroes)):
-    if spidey4[i] == 0:
-        zeroTot += 1
-
-print(zeroTot)
-
 
 for i in range(0, len(heroes)):
     if (spidey1[i] > 0 and spidey2[i] > 0) or spidey2[i] == 0:              #remove all values that already have spidey number of 1, from array of heroes wiht spidey # of 2
@@ -139,7 +107,7 @@ for i in range(0, len(heroes)):
     if (spidey1[i] > 0 or spidey2[i] > 0) and spidey3[i] > 0:               #remove all values that already have spidey number of 1 or 2, from array of heroes wiht spidey # of 3
         spidey3[i] = -1
 for i in range(0, len(heroes)):
-    if (spidey1[i] > 0 or spidey2[i] > 0 or spidey3[i] > 0) > 0 and spidey4[i] > 0:  #remove all values that already have spidey number of 1 or 2 or 3, from array of heroes wiht spidey # of 4
+    if (spidey1[i] > 0 or spidey2[i] > 0 or spidey3[i] > 0) and spidey4[i] > 0:  #remove all values that already have spidey number of 1 or 2 or 3, from array of heroes wiht spidey # of 4
         spidey4[i] = -1
 
 spidey1[5305] = 0           #set spiderman to have spidey number of 0 for all arrays
@@ -172,17 +140,17 @@ properRange = False
 while properRange == False:
     print("Please enter the index you would like to start printing heroes (From 1-6486)")
     inInd1 = int(input())
-    print("Please enter the index you would like to finish printing heroes (From 1-6486)")
+    print("Please enter the index you would like to finish printing heroes (From " + str(inInd1) + "-6486)")
     inInd2 = int(input())
 
     inInd1 = inInd1 - 1
-    if (inInd1 > -1 and inInd1 < 6486) and (inInd2 > 1 and inInd2 < 6487):
+    if (inInd1 > -1 and inInd1 < 6486) and (inInd2 > inInd1 and inInd2 < 6487):
         properRange = True
     else:
         print("outside the range of indexes")
         properRange = False
 
-#get all heroes with spiderman number of 1
+
 for i in range(inInd1, inInd2):           #print in range specified
     heroInd = i
     if spidey1[i] > 0:
